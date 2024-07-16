@@ -1,0 +1,369 @@
+﻿Build1=Default,Calculator.Master.Plus
+File1=BasicCalc.bal
+File2=Logo.png
+File3=portada.bal
+File4=registro.bal
+File5=Scrol_Main_fFromulas.bal
+File6=Scrol_Main_fUnid__1.bal
+File7=Scrol_paneles_fFormulas.bal
+File8=Scroll_Paneles_fFormulas_Plantilla.bal
+FileGroup1=Default Group
+FileGroup2=Imgs
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+Group=Default Group
+Library1=core
+Library2=xui
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=fFormulas
+Module2=fUnidades
+Module3=Login
+Module4=Registro
+Module5=Starter
+NumberOfFiles=8
+NumberOfLibraries=2
+NumberOfModules=5
+Version=12.5
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: Calculator Master Plus
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	'Estaba en True
+	#FullScreen: False
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+	Private xui As XUI
+	
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	Private lbl_mostrarnumeros As Label
+	Private btn_uno As Button
+	Private btn_dos As Button
+	Private btn_tres As Button
+	Private btn_cuatro As Button
+	Private btn_cinco As Button
+	Private btn_seis As Button
+	Private btn_siete As Button
+	Private btn_ocho As Button
+	Private btn_nueve As Button
+	Private btn_cero As Button
+	Private btn_coma As Button
+	Private btn_igual As Button
+	Private btn_mas As Button
+	Private btn_menos As Button
+	Private btn_multi As Button
+	Private btn_div As Button
+	Private editext_insertarNums As EditText
+	Private btn_eliminar As Button
+	Private btn_Limpiar As Button
+	Dim numeroinicial As Float
+	Dim numerosiguiente As Float
+	Private lbl_mostrarcuenta As Label
+	Dim operacion As Char
+	Dim resultado As Float
+	numeroinicial=0
+	numerosiguiente=0
+	Private lbl_operador As Label
+	Private btn_iniciarSesion As Button
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Activity.LoadLayout("BasicCalc")
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+
+Private Sub btn_uno_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 1
+	
+End Sub
+
+Private Sub btn_dos_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 2
+	
+End Sub
+
+Private Sub editext_insertarNums_TextChanged (Old As String, New As String)
+	
+End Sub
+
+Private Sub btn_eliminar_Click
+	If editext_insertarNums.Text<>"" Then
+		editext_insertarNums.Text=editext_insertarNums.Text.SubString2(0,editext_insertarNums.Text.Length -1) 'Elimina el  ultimo caracter escrito
+		Else
+			lbl_operador.Text="Nada para eliminar"
+	End If
+	
+End Sub
+
+Private Sub btn_Limpiar_Click
+	editext_insertarNums.Text=""
+	lbl_mostrarnumeros.Text="Total:"
+	lbl_mostrarcuenta.Text="Numeros ingresados"
+	lbl_operador.Text=""
+	resultado=0
+	numeroinicial=0
+	numerosiguiente=0
+	operacion=""
+End Sub
+
+Private Sub btn_tres_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 3
+End Sub
+
+Private Sub btn_cuatro_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 4
+End Sub
+
+Private Sub btn_cinco_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 5
+End Sub
+
+Private Sub btn_seis_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 6
+End Sub
+
+Private Sub btn_siete_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 7
+End Sub
+
+Private Sub btn_ocho_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 8
+End Sub
+
+Private Sub btn_nueve_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 9
+End Sub
+
+Private Sub btn_cero_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & 0
+End Sub
+
+Private Sub btn_mas_Click
+
+	If editext_insertarNums.Text <> "" Then 'Comenzar la primera operacion
+	If numeroinicial ==0 Then 'Valida si no se ha escrito el primer numero
+		numeroinicial=editext_insertarNums.Text 'Asigna el primer valor
+		editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+		editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+		lbl_operador.Text="Suma"
+		lbl_mostrarcuenta.Text=numeroinicial 'Muestra el primer dato escrito
+		operacion ="+" 'Actualiza el estado para usarse en la clase igual.
+		Else 'Continuar la futuras operaciones
+			If editext_insertarNums.Text <>"." Then
+			numerosiguiente=editext_insertarNums.Text 'Se almacena el segundo valor digitado
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			resultado=numeroinicial+numerosiguiente 'Se completa la operacion y se almacena el resultado para operarse posteriormente
+			numeroinicial=resultado 'El dato inicial debe tomar el mismo valor del resultado para operarse en procesos posteriores
+			lbl_mostrarnumeros.Text=resultado 'Muestra el resultado
+			lbl_operador.Text="Suma"
+			lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "+" & numerosiguiente 'Muestra la secuencia escrita
+			operacion ="+" 'Actualiza el estado para usarse en la clase igual.
+			Else
+				lbl_operador.Text="El '.' No es un numero"
+			End If
+	End If
+	Else
+		lbl_operador.Text="Sin adicion"
+		operacion ="+"
+End If
+	
+End Sub
+
+Private Sub btn_igual_Click
+	
+	Select operacion
+		
+		Case "+"
+			If editext_insertarNums.Text <>"" And editext_insertarNums.Text <>"." Then
+				numerosiguiente=editext_insertarNums.Text
+				editext_insertarNums.Text=0
+				editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  ultimo caracter escrito
+				resultado=numeroinicial+numerosiguiente
+				numeroinicial=resultado
+				lbl_mostrarnumeros.Text=resultado
+				lbl_operador.Text="Suma"
+				lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "+" & numerosiguiente
+				'editext_insertarNums.Text=resultado
+				Else
+				lbl_operador.Text="Digita una cifra"
+			End If
+			
+		Case "-"
+			If editext_insertarNums.Text <>"" And editext_insertarNums.Text <>"." Then
+				numerosiguiente=editext_insertarNums.Text
+				editext_insertarNums.Text=0
+				editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  ultimo caracter escrito
+				resultado=numeroinicial-numerosiguiente
+				numeroinicial=resultado
+				lbl_mostrarnumeros.Text=resultado
+				lbl_operador.Text="Resta"
+				lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "-" & numerosiguiente
+				'editext_insertarNums.Text=resultado
+			Else
+				lbl_operador.Text="Digita una cifra"
+			End If
+		Case "/"
+			If editext_insertarNums.Text <>"" And editext_insertarNums.Text <>"." Then
+				numerosiguiente=editext_insertarNums.Text
+				If numerosiguiente <>0 Then
+				editext_insertarNums.Text=0
+				editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  ultimo caracter escrito
+				resultado=numeroinicial/numerosiguiente
+				numeroinicial=resultado
+				lbl_mostrarnumeros.Text=resultado
+				lbl_operador.Text="Division"
+				lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "÷" & numerosiguiente
+				'editext_insertarNums.Text=resultado
+				Else
+					lbl_operador.Text="No puedes dividir por '0'"
+					editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0)
+				End If
+			Else
+				lbl_operador.Text="Digita una cifra"
+			End If
+		Case "*"
+			If editext_insertarNums.Text <>"" And editext_insertarNums.Text <>"." Then
+				numerosiguiente=editext_insertarNums.Text
+				editext_insertarNums.Text=0
+				editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  ultimo caracter escrito
+				resultado=numeroinicial*numerosiguiente
+				numeroinicial=resultado
+				lbl_mostrarnumeros.Text=resultado
+				lbl_operador.Text="Multiplicacion"
+				lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "*" & numerosiguiente
+				'editext_insertarNums.Text=resultado
+			Else
+				lbl_operador.Text="Digita una cifra"
+			End If
+	End Select
+	
+End Sub
+
+Private Sub btn_menos_Click
+	If editext_insertarNums.Text <> "" Then 'Comenzar la primera operacion
+		If numeroinicial ==0 Then 'Valida si no se ha escrito el primer numero
+			numeroinicial=editext_insertarNums.Text 'Asigna el primer valor
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			lbl_operador.Text="Resta"
+			lbl_mostrarcuenta.Text=numeroinicial 'Muestra el primer dato escrito
+			operacion ="-" 'Actualiza el estado para usarse en la clase igual.
+		Else 'Continuar la futuras operaciones
+			If editext_insertarNums.Text <>"." Then
+			numerosiguiente=editext_insertarNums.Text 'Se almacena el segundo valor digitado
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			resultado=numeroinicial-numerosiguiente 'Se completa la operacion y se almacena el resultado para operarse posteriormente
+			numeroinicial=resultado 'El dato inicial debe tomar el mismo valor del resultado para operarse en procesos posteriores
+			lbl_mostrarnumeros.Text=resultado 'Muestra el resultado
+			lbl_operador.Text="Resta"
+			lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "-" & numerosiguiente 'Muestra la secuencia escrita
+			operacion ="-" 'Actualiza el estado para usarse en la clase igual.
+			Else
+				lbl_operador.Text="El '.' No es un numero"
+			End If
+		End If
+	Else
+		lbl_operador.Text="Sin datos de reduccion"
+		operacion ="-"
+	End If
+End Sub
+
+Private Sub btn_div_Click
+	If editext_insertarNums.Text <> ""  Then 'Comenzar la primera operacion
+		If numeroinicial ==0 Then 'Valida si no se ha escrito el primer numero
+			numeroinicial=editext_insertarNums.Text 'Asigna el primer valor
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			lbl_operador.Text="Digite el divisor"
+			lbl_mostrarcuenta.Text=numeroinicial 'Muestra el primer dato escrito
+			operacion ="/" 'Actualiza el estado para usarse en la clase igual.
+		Else 'Continuar la futuras operaciones
+			If editext_insertarNums.Text <>"." Then
+			numerosiguiente=editext_insertarNums.Text 'Se almacena el segundo valor digitado
+			If numerosiguiente <>0 Then
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			resultado=numeroinicial/numerosiguiente 'Se completa la operacion y se almacena el resultado para operarse posteriormente
+			numeroinicial=resultado 'El dato inicial debe tomar el mismo valor del resultado para operarse en procesos posteriores
+			lbl_mostrarnumeros.Text=resultado 'Muestra el resultado
+			lbl_operador.Text="Dividido"
+			lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "÷" & numerosiguiente 'Muestra la secuencia escrita
+			operacion ="/" 'Actualiza el estado para usarse en la clase igual.
+			Else
+				lbl_operador.Text="No puedes dividir por '0'"
+				editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0)
+			End If
+			Else
+				lbl_operador.Text="El '.' No es un numero"
+			End If
+		End If
+	Else
+		lbl_operador.Text="Sin divisor"
+		operacion ="/"
+	End If
+End Sub
+
+Private Sub btn_multi_Click
+	If editext_insertarNums.Text <> "" Then 'Comenzar la primera operacion
+		If numeroinicial ==0 Then 'Valida si no se ha escrito el primer numero
+			numeroinicial=editext_insertarNums.Text 'Asigna el primer valor
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			lbl_operador.Text="Por cuanto ?"
+			lbl_mostrarcuenta.Text=numeroinicial 'Muestra el primer dato escrito
+			operacion ="*" 'Actualiza el estado para usarse en la clase igual.
+		Else 'Continuar la futuras operaciones
+			If editext_insertarNums.Text <>"." Then
+			numerosiguiente=editext_insertarNums.Text 'Se almacena el segundo valor digitado
+			editext_insertarNums.Text=0 'Vuelve a cero el editor de texto
+			editext_insertarNums.Text=editext_insertarNums.Text.SubString2(1,editext_insertarNums.Text.Length -0) 'Elimina el  "0" residual
+			resultado=numeroinicial*numerosiguiente 'Se completa la operacion y se almacena el resultado para operarse posteriormente
+			numeroinicial=resultado 'El dato inicial debe tomar el mismo valor del resultado para operarse en procesos posteriores
+			lbl_mostrarnumeros.Text=resultado 'Muestra el resultado
+			lbl_operador.Text="Multiplicado"
+			lbl_mostrarcuenta.Text=lbl_mostrarcuenta.Text & "*" & numerosiguiente 'Muestra la secuencia escrita
+			operacion ="*" 'Actualiza el estado para usarse en la clase igual.
+			Else
+				lbl_operador.Text="El '.' No es un numero"
+			End If
+		End If
+	Else
+		lbl_operador.Text="Digite un multiplicador"
+		operacion ="*"
+	End If
+End Sub
+
+Private Sub btn_coma_Click
+	editext_insertarNums.Text = editext_insertarNums.Text & "."
+End Sub
+
+Private Sub btn_iniciarSesion_Click
+	StartActivity(Login)'Direccion a una nueva pantalla.
+	'Activity.Finish 'Finaliza la actividad actual.
+End Sub
